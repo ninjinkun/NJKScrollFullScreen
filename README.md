@@ -1,9 +1,7 @@
 # NJKScrollFullSreen
 NJKScrollFullSreen is Facebook App like scroll to full screen library.
 
-<video controls autoplay loop src="Screenshots/screencast.mp4" width=320>
-  Your browser does not support the video tag.
-</video>
+<img src="Screenshots/screencast.gif" width=320>
 
 This repository consists of full screen delegate and full screen UI behaivior module.
 
