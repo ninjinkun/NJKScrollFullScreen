@@ -21,7 +21,7 @@ These modules are individual. You can implement your own customized full screen 
 ## CocoaPods
 
 ```
-pod 'NJKScrollFullScreen', :git => 'https://github.com/ninjinkun/NJKScrollFullScreen.git'
+pod 'NJKScrollFullScreen'
 ```
 
 # Usage
