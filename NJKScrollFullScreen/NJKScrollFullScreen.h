@@ -11,11 +11,11 @@
 @interface NJKScrollFullScreen : NSObject<UIScrollViewDelegate>
 
 @property (nonatomic, weak) id<NJKScrollFullscreenDelegate> delegate;
-@property (nonatomic, weak) id<UIScrollViewDelegate>scrollViewDelegate;
 
 @property (nonatomic) CGFloat upThresholdY; // up distance until fire. default 0 px.
 @property (nonatomic) CGFloat downThresholdY; // down distance until fire. default 200 px.
 
+- (id)initWithForwardTarget:(id)forwardTarget;
 - (void)reset;
 
 @end
