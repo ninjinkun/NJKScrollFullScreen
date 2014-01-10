@@ -23,12 +23,11 @@
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refreshControlValueChanged:) forControlEvents:UIControlEventValueChanged];
 
-    _scrollProxy = [[NJKScrollFullScreen alloc] init];
+    _scrollProxy = [[NJKScrollFullScreen alloc] initWithForwardTarget:self]; // UIScrollViewDelegate and UITableViewDelegate methods proxy to ViewController
 
     self.tableView.delegate = (id)_scrollProxy; // cast for surpress incompatible warnings
 
     _scrollProxy.delegate = self;
-    _scrollProxy.scrollViewDelegate = self; // UIScrollViewDelegate methods proxy to ViewController
 
     if (!IS_RUNNING_IOS7) {
         // support full screen on iOS 6
@@ -125,6 +124,5 @@
     [self showNavigationBar:YES];
     [self showToolbar:YES];
 }
-
 
 @end
