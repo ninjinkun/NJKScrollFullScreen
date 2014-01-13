@@ -23,17 +23,19 @@ NJKScrollDirection detectScrollDirection(currentOffsetY, previousOffsetY)
 @property (nonatomic) NJKScrollDirection previousScrollDirection;
 @property (nonatomic) CGFloat previousOffsetY;
 @property (nonatomic) CGFloat accumulatedY;
+@property (nonatomic, weak) id<UIScrollViewDelegate> forwardTarget;
 @end
 
 @implementation NJKScrollFullScreen
 
-- (id)init
+- (id)initWithForwardTarget:(id)forwardTarget
 {
     self = [super init];
     if (self) {
         [self reset];
         _downThresholdY = 200.0;
         _upThresholdY = 0.0;
+        _forwardTarget = forwardTarget;
     }
     return self;
 }
@@ -47,8 +49,8 @@ NJKScrollDirection detectScrollDirection(currentOffsetY, previousOffsetY)
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if ([_scrollViewDelegate respondsToSelector:@selector(scrollViewDidScroll:)]) {
-        [_scrollViewDelegate scrollViewDidScroll:scrollView];
+    if ([_forwardTarget respondsToSelector:@selector(scrollViewDidScroll:)]) {
+        [_forwardTarget scrollViewDidScroll:scrollView];
     }
 
     CGFloat currentOffsetY = scrollView.contentOffset.y;
@@ -106,8 +108,8 @@ NJKScrollDirection detectScrollDirection(currentOffsetY, previousOffsetY)
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    if ([_scrollViewDelegate respondsToSelector:@selector(scrollViewDidEndDragging:willDecelerate:)]) {
-        [_scrollViewDelegate scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
+    if ([_forwardTarget respondsToSelector:@selector(scrollViewDidEndDragging:willDecelerate:)]) {
+        [_forwardTarget scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
     }
 
     CGFloat currentOffsetY = scrollView.contentOffset.y;
@@ -148,8 +150,8 @@ NJKScrollDirection detectScrollDirection(currentOffsetY, previousOffsetY)
 - (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
 {
     BOOL ret = YES;
-    if ([_scrollViewDelegate respondsToSelector:@selector(scrollViewShouldScrollToTop:)]) {
-        ret = [_scrollViewDelegate scrollViewShouldScrollToTop:scrollView];
+    if ([_forwardTarget respondsToSelector:@selector(scrollViewShouldScrollToTop:)]) {
+        ret = [_forwardTarget scrollViewShouldScrollToTop:scrollView];
     }
     if ([_delegate respondsToSelector:@selector(scrollFullScreenScrollViewDidEndDraggingScrollDown:)]) {
         [_delegate scrollFullScreenScrollViewDidEndDraggingScrollDown:self];
@@ -164,8 +166,8 @@ NJKScrollDirection detectScrollDirection(currentOffsetY, previousOffsetY)
 {
     NSMethodSignature *signature = [super methodSignatureForSelector:selector];
     if(!signature) {
-        if([_scrollViewDelegate respondsToSelector:selector]) {
-            return [(id)_scrollViewDelegate methodSignatureForSelector:selector];
+        if([_forwardTarget respondsToSelector:selector]) {
+            return [(id)_forwardTarget methodSignatureForSelector:selector];
         }
     }
     return signature;
@@ -173,9 +175,18 @@ NJKScrollDirection detectScrollDirection(currentOffsetY, previousOffsetY)
 
 - (void)forwardInvocation:(NSInvocation*)invocation
 {
-    if ([_scrollViewDelegate respondsToSelector:[invocation selector]]) {
-        [invocation invokeWithTarget:_scrollViewDelegate];
+    if ([_forwardTarget respondsToSelector:[invocation selector]]) {
+        [invocation invokeWithTarget:_forwardTarget];
     }
+}
+
+- (BOOL)respondsToSelector:(SEL)aSelector
+{
+    BOOL ret = [super respondsToSelector:aSelector];
+    if (!ret) {
+        ret = [_forwardTarget respondsToSelector:aSelector];
+    }
+    return ret;
 }
 
 @end

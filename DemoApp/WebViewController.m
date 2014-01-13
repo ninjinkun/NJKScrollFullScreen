@@ -18,11 +18,10 @@
 {
     [super viewDidLoad];
 
-    _scrollProxy = [[NJKScrollFullScreen alloc] init];
+    _scrollProxy = [[NJKScrollFullScreen alloc] initWithForwardTarget:self.webView];
 
     self.webView.scrollView.delegate = _scrollProxy;
     _scrollProxy.delegate = self;
-    _scrollProxy.scrollViewDelegate = self.webView;
 
     [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.apple.com/macbook-pro/"]]];
 }
