@@ -50,7 +50,8 @@
 
     frame.origin.y = fmin(fmax(y, topLimit), bottomLimit);
     CGFloat alpha = 1 - (statusBarHeight - frame.origin.y) / statusBarHeight;
-    UIColor *titleTextColor = [UIColor colorWithWhite:0.0 alpha:alpha]; // fade title
+    UIColor *titleTextColor = self.navigationController.navigationBar.titleTextAttributes[NSForegroundColorAttributeName] ?: [UIColor blackColor];
+    titleTextColor = [titleTextColor colorWithAlphaComponent:alpha]; // fade title
     [UIView animateWithDuration:animated ? 0.1 : 0 animations:^{
         self.navigationController.navigationBar.frame = frame;
         [self.navigationController.navigationBar setTitleTextAttributes:@{ NSForegroundColorAttributeName : titleTextColor }];
