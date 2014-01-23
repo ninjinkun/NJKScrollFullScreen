@@ -79,7 +79,7 @@ NJKScrollDirection detectScrollDirection(CGFloat currentOffsetY, CGFloat previou
     }
     
     CGFloat topBoundary = -scrollView.contentInset.top;
-    CGFloat bottomBoundary = scrollView.contentSize.height + scrollView.contentInset.bottom;
+    CGFloat bottomBoundary = scrollView.contentSize.height - (scrollView.bounds.size.height - scrollView.contentInset.bottom);
     
     BOOL isOverTopBoundary = currentOffsetY <= topBoundary;
     BOOL isOverBottomBoundary = currentOffsetY >= bottomBoundary;
@@ -143,7 +143,7 @@ NJKScrollDirection detectScrollDirection(CGFloat currentOffsetY, CGFloat previou
     CGFloat currentOffsetY = scrollView.contentOffset.y;
     
     CGFloat topBoundary = -scrollView.contentInset.top;
-    CGFloat bottomBoundary = scrollView.contentSize.height + scrollView.contentInset.bottom;
+    CGFloat bottomBoundary = scrollView.contentSize.height - (scrollView.bounds.size.height - scrollView.contentInset.bottom);
     
     switch (_previousScrollDirection) {
         case NJKScrollDirectionUp:
