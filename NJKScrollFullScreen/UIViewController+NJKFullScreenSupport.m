@@ -12,6 +12,8 @@
 
 #import "UIViewController+NJKFullScreenSupport.h"
 
+#define kNearZero 0.000001f
+
 @implementation UIViewController (NJKFullScreenSupport)
 
 - (void)showNavigationBar:(BOOL)animated
@@ -27,7 +29,7 @@
     CGFloat statusBarHeight = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? statuBarFrameSize.height : statuBarFrameSize.width;
     CGFloat navigationBarHeight = self.navigationController.navigationBar.frame.size.height;
     CGFloat top = NJK_IS_RUNNING_IOS7 ? -navigationBarHeight + statusBarHeight : -navigationBarHeight;
-
+    
     [self setNavigationBarOriginY:top animated:animated];
 }
 
@@ -44,17 +46,20 @@
     CGFloat statusBarHeight = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? statuBarFrameSize.height : statuBarFrameSize.width;
     CGRect frame = self.navigationController.navigationBar.frame;
     CGFloat navigationBarHeight = frame.size.height;
-
+    
     CGFloat topLimit = NJK_IS_RUNNING_IOS7 ? -navigationBarHeight + statusBarHeight : -navigationBarHeight;
     CGFloat bottomLimit = statusBarHeight;
-
+    
     frame.origin.y = fmin(fmax(y, topLimit), bottomLimit);
-    CGFloat alpha = 1 - (statusBarHeight - frame.origin.y) / statusBarHeight;
-    UIColor *titleTextColor = self.navigationController.navigationBar.titleTextAttributes[NSForegroundColorAttributeName] ?: [UIColor blackColor];
-    titleTextColor = [titleTextColor colorWithAlphaComponent:alpha]; // fade title
+    CGFloat alpha = MAX(1 - (statusBarHeight - frame.origin.y) / statusBarHeight, kNearZero);
     [UIView animateWithDuration:animated ? 0.1 : 0 animations:^{
         self.navigationController.navigationBar.frame = frame;
-        [self.navigationController.navigationBar setTitleTextAttributes:@{ NSForegroundColorAttributeName : titleTextColor }];
+        NSUInteger index = 0;
+        for (UIView *view in self.navigationController.navigationBar.subviews) {
+            index++;
+            if (index == 1 || view.hidden || view.alpha <= 0.0f) continue;
+            view.alpha = alpha;
+        }
         if (NJK_IS_RUNNING_IOS7) {
             // fade bar buttons
             UIColor *tintColor = self.navigationController.navigationBar.tintColor;
@@ -63,7 +68,7 @@
                 self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:components[0] green:components[1] blue:components[2] alpha:alpha];
             }
         }
-
+        
     }];
 }
 
@@ -98,12 +103,12 @@
     CGFloat toolBarHeight = frame.size.height;
     CGSize viewSize = self.navigationController.view.frame.size;
     CGFloat viewHeight = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? viewSize.height : viewSize.width;
-
+    
     CGFloat topLimit = viewHeight - toolBarHeight;
     CGFloat bottomLimit = viewHeight;
-
+    
     frame.origin.y = fmin(fmax(y, topLimit), bottomLimit); // limit over moving
-
+    
     [UIView animateWithDuration:animated ? 0.1 : 0 animations:^{
         self.navigationController.toolbar.frame = frame;
     }];
@@ -139,12 +144,12 @@
     CGFloat toolBarHeight = frame.size.height;
     CGSize viewSize = self.tabBarController.view.frame.size;
     CGFloat viewHeight = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? viewSize.height : viewSize.width;
-
+    
     CGFloat topLimit = viewHeight - toolBarHeight;
     CGFloat bottomLimit = viewHeight;
-
+    
     frame.origin.y = fmin(fmax(y, topLimit), bottomLimit); // limit over moving
-
+    
     [UIView animateWithDuration:animated ? 0.1 : 0 animations:^{
         self.tabBarController.tabBar.frame = frame;
     }];
