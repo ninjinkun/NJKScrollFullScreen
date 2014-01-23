@@ -55,6 +55,7 @@
     [UIView animateWithDuration:animated ? 0.1 : 0 animations:^{
         self.navigationController.navigationBar.frame = frame;
         [self.navigationController.navigationBar setTitleTextAttributes:@{ NSForegroundColorAttributeName : titleTextColor }];
+        self.navigationItem.titleView.alpha = alpha;
         if (NJK_IS_RUNNING_IOS7) {
             // fade bar buttons
             UIColor *tintColor = self.navigationController.navigationBar.tintColor;
@@ -63,7 +64,6 @@
                 self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:components[0] green:components[1] blue:components[2] alpha:alpha];
             }
         }
-
     }];
 }
 
