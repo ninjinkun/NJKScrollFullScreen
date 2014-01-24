@@ -36,8 +36,8 @@ NJKScrollDirection detectScrollDirection(CGFloat currentOffsetY, CGFloat previou
     self = [super init];
     if (self) {
         [self reset];
-        _downThresholdY = 200.0;
-        _upThresholdY = 0.0;
+        _downThresholdY = 100.0;
+        _upThresholdY = 20.0;
         _forwardTarget = forwardTarget;
     }
     return self;
@@ -71,13 +71,11 @@ NJKScrollDirection detectScrollDirection(CGFloat currentOffsetY, CGFloat previou
     CGFloat currentOffsetY = scrollView.contentOffset.y;
     if (_previousScrollDirection == NJKScrollDirectionNone) {
         _previousOffsetY = currentOffsetY;
-    }
-    NJKScrollDirection currentScrollDirection = detectScrollDirection(currentOffsetY, _previousOffsetY);
-    if (_previousScrollDirection == NJKScrollDirectionNone) {
-        _previousScrollDirection = currentScrollDirection;
+        _previousScrollDirection = NJKScrollDirectionSame;
         return;
     }
     
+    NJKScrollDirection currentScrollDirection = detectScrollDirection(currentOffsetY, _previousOffsetY);
     CGFloat topBoundary = -scrollView.contentInset.top;
     CGFloat bottomBoundary = scrollView.contentSize.height - (scrollView.bounds.size.height - scrollView.contentInset.bottom);
     
@@ -98,9 +96,7 @@ NJKScrollDirection detectScrollDirection(CGFloat currentOffsetY, CGFloat previou
             BOOL isOverThreshold = _accumulatedY < -_adjustedUpThresholdY;
             
             if (isOverThreshold || isOverBottomBoundary)  {
-                if (_previousScrollDirection != currentScrollDirection) {
-                    [self adjustThresholdYToZero];
-                }
+                [self adjustThresholdYToZero];
                 if ([_delegate respondsToSelector:@selector(scrollFullScreen:scrollViewDidScrollUp:)]) {
                     [_delegate scrollFullScreen:self scrollViewDidScrollUp:deltaY];
                 }
@@ -112,9 +108,7 @@ NJKScrollDirection detectScrollDirection(CGFloat currentOffsetY, CGFloat previou
             BOOL isOverThreshold = _accumulatedY > _adjustedDownThresholdY;
             
             if (isOverThreshold || isOverTopBoundary) {
-                if (_previousScrollDirection != currentScrollDirection) {
-                    [self adjustThresholdYToZero];
-                }
+                [self adjustThresholdYToZero];
                 if ([_delegate respondsToSelector:@selector(scrollFullScreen:scrollViewDidScrollDown:)]) {
                     [_delegate scrollFullScreen:self scrollViewDidScrollDown:deltaY];
                 }
