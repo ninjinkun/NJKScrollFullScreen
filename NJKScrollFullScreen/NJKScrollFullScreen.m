@@ -77,10 +77,12 @@ NJKScrollDirection detectScrollDirection(CGFloat currentOffsetY, CGFloat previou
     
     NJKScrollDirection currentScrollDirection = detectScrollDirection(currentOffsetY, _previousOffsetY);
     CGFloat topBoundary = -scrollView.contentInset.top;
-    CGFloat bottomBoundary = scrollView.contentSize.height - (scrollView.bounds.size.height - scrollView.contentInset.bottom);
+    CGFloat bottomBarTopBoundary = MAX(0.0, scrollView.contentSize.height - scrollView.bounds.size.height);
+    CGFloat bottomBoundary = MAX(0.0, scrollView.contentSize.height - (scrollView.bounds.size.height - scrollView.contentInset.bottom));
     
     BOOL isOverTopBoundary = currentOffsetY <= topBoundary;
     BOOL isOverBottomBoundary = currentOffsetY >= bottomBoundary;
+    BOOL isOverBottomBarTop = (bottomBarTopBoundary != bottomBoundary && currentOffsetY >= bottomBarTopBoundary);
     
     BOOL isBouncing = (isOverTopBoundary && currentScrollDirection != NJKScrollDirectionDown) || (isOverBottomBoundary && currentScrollDirection != NJKScrollDirectionUp);
     if (isBouncing) {
@@ -95,9 +97,11 @@ NJKScrollDirection detectScrollDirection(CGFloat currentOffsetY, CGFloat previou
         {
             BOOL isOverThreshold = _accumulatedY < -_adjustedUpThresholdY;
             
-            if (isOverThreshold || isOverBottomBoundary)  {
+            if (isOverThreshold || isOverBottomBoundary || isOverBottomBarTop)  {
                 [self adjustThresholdYToZero];
-                if ([_delegate respondsToSelector:@selector(scrollFullScreen:scrollViewDidScrollUp:)]) {
+                if (isOverBottomBarTop && [_delegate respondsToSelector:@selector(scrollFullScreen:scrollViewOverBottomBarTopBoundary:)]) {
+                    [_delegate scrollFullScreen:self scrollViewOverBottomBarTopBoundary:deltaY];
+                } else if ([_delegate respondsToSelector:@selector(scrollFullScreen:scrollViewDidScrollUp:)]) {
                     [_delegate scrollFullScreen:self scrollViewDidScrollUp:deltaY];
                 }
             }
@@ -112,6 +116,7 @@ NJKScrollDirection detectScrollDirection(CGFloat currentOffsetY, CGFloat previou
                 if ([_delegate respondsToSelector:@selector(scrollFullScreen:scrollViewDidScrollDown:)]) {
                     [_delegate scrollFullScreen:self scrollViewDidScrollDown:deltaY];
                 }
+                
             }
         }
             break;
@@ -137,15 +142,19 @@ NJKScrollDirection detectScrollDirection(CGFloat currentOffsetY, CGFloat previou
     CGFloat currentOffsetY = scrollView.contentOffset.y;
     
     CGFloat topBoundary = -scrollView.contentInset.top;
-    CGFloat bottomBoundary = scrollView.contentSize.height - (scrollView.bounds.size.height - scrollView.contentInset.bottom);
+    CGFloat bottomBarTopBoundary = MAX(0.0, scrollView.contentSize.height - scrollView.bounds.size.height);
+    CGFloat bottomBoundary = MAX(0.0, scrollView.contentSize.height - (scrollView.bounds.size.height - scrollView.contentInset.bottom));
     
     switch (_previousScrollDirection) {
         case NJKScrollDirectionUp:
         {
             BOOL isOverThreshold = _accumulatedY < -_adjustedUpThresholdY;
             BOOL isOverBottomBoundary = currentOffsetY >= bottomBoundary;
+            BOOL isOverBottomBarTop = (bottomBarTopBoundary != bottomBoundary && currentOffsetY >= bottomBarTopBoundary);
             
-            if (isOverThreshold || isOverBottomBoundary) {
+            if (isOverBottomBarTop && [_delegate respondsToSelector:@selector(scrollFullScreenScrollViewDidEndDraggingScrollUpAtBottomBarZone:)]) {
+                [_delegate scrollFullScreenScrollViewDidEndDraggingScrollUpAtBottomBarZone:self];
+            } else if (isOverThreshold || isOverBottomBoundary) {
                 if ([_delegate respondsToSelector:@selector(scrollFullScreenScrollViewDidEndDraggingScrollUp:)]) {
                     [_delegate scrollFullScreenScrollViewDidEndDraggingScrollUp:self];
                 }
