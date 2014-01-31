@@ -51,7 +51,7 @@
     CGFloat bottomLimit = statusBarHeight;
     
     frame.origin.y = fmin(fmax(y, topLimit), bottomLimit);
-    CGFloat alpha = MAX(1 - (statusBarHeight - frame.origin.y) / statusBarHeight, kNearZero);
+    CGFloat alpha = MAX(1 - ABS(statusBarHeight - frame.origin.y) / (statusBarHeight <= 0.0 ? ABS(topLimit) : statusBarHeight), kNearZero);
     [UIView animateWithDuration:animated ? 0.1 : 0 animations:^{
         self.navigationController.navigationBar.frame = frame;
         NSUInteger index = 0;
