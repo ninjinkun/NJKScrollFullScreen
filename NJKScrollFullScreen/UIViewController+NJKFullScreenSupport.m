@@ -116,21 +116,21 @@
 {
     CGFloat viewHeight = self.tabBarController.view.frame.size.height;
     CGFloat toolbarHeight = self.tabBarController.tabBar.frame.size.height;
-    [self setToolbarOriginY:viewHeight - toolbarHeight animated:animated];
+    [self setTabBarOriginY:viewHeight - toolbarHeight animated:animated];
 }
 
 - (void)hideTabBar:(BOOL)animated
 {
     CGSize viewSize = self.tabBarController.view.frame.size;
     CGFloat viewHeight = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? viewSize.height : viewSize.width;
-    [self setToolbarOriginY:viewHeight animated:animated];
+    [self setTabBarOriginY:viewHeight animated:animated];
 }
 
 - (void)moveTabBar:(CGFloat)deltaY animated:(BOOL)animated
 {
     CGRect frame =  self.tabBarController.tabBar.frame;
     CGFloat nextY = frame.origin.y + deltaY;
-    [self setToolbarOriginY:nextY animated:animated];
+    [self setTabBarOriginY:nextY animated:animated];
 }
 
 - (void)setTabBarOriginY:(CGFloat)y animated:(BOOL)animated
