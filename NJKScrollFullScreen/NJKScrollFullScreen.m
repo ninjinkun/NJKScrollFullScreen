@@ -16,8 +16,8 @@ typedef NS_ENUM(NSInteger, NJKScrollDirection) {
 NJKScrollDirection detectScrollDirection(CGFloat currentOffsetY, CGFloat previousOffsetY)
 {
     return currentOffsetY > previousOffsetY ? NJKScrollDirectionUp   :
-    currentOffsetY < previousOffsetY ? NJKScrollDirectionDown :
-    NJKScrollDirectionSame;
+           currentOffsetY < previousOffsetY ? NJKScrollDirectionDown :
+                                              NJKScrollDirectionSame;
 }
 
 @interface NJKScrollFullScreen ()
@@ -88,7 +88,6 @@ NJKScrollDirection detectScrollDirection(CGFloat currentOffsetY, CGFloat previou
     if (isBouncing) {
         return;
     }
-    
     CGFloat deltaY = _previousOffsetY - currentOffsetY;
     _accumulatedY += deltaY;
     
@@ -116,7 +115,6 @@ NJKScrollDirection detectScrollDirection(CGFloat currentOffsetY, CGFloat previou
                 if ([_delegate respondsToSelector:@selector(scrollFullScreen:scrollViewDidScrollDown:)]) {
                     [_delegate scrollFullScreen:self scrollViewDidScrollDown:deltaY];
                 }
-                
             }
         }
             break;
