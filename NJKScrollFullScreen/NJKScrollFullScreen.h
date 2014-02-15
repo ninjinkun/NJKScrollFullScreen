@@ -21,8 +21,11 @@
 @end
 
 @protocol NJKScrollFullscreenDelegate <NSObject>
+@optional
 - (void)scrollFullScreen:(NJKScrollFullScreen *)fullScreenProxy scrollViewDidScrollUp:(CGFloat)deltaY;
 - (void)scrollFullScreen:(NJKScrollFullScreen *)fullScreenProxy scrollViewDidScrollDown:(CGFloat)deltaY;
+- (void)scrollFullScreen:(NJKScrollFullScreen *)fullScreenProxy scrollViewOverBottomBarTopBoundary:(CGFloat)deltaY;
 - (void)scrollFullScreenScrollViewDidEndDraggingScrollUp:(NJKScrollFullScreen *)fullScreenProxy;
 - (void)scrollFullScreenScrollViewDidEndDraggingScrollDown:(NJKScrollFullScreen *)fullScreenProxy;
+- (void)scrollFullScreenScrollViewDidEndDraggingScrollUpAtBottomBarZone:(NJKScrollFullScreen *)fullScreenProxy;
 @end
