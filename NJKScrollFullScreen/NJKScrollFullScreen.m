@@ -23,7 +23,7 @@ NJKScrollDirection detectScrollDirection(currentOffsetY, previousOffsetY)
 @property (nonatomic) NJKScrollDirection previousScrollDirection;
 @property (nonatomic) CGFloat previousOffsetY;
 @property (nonatomic) CGFloat accumulatedY;
-@property (nonatomic, assign) id<UIScrollViewDelegate> forwardTarget;
+@property (nonatomic, unsafe_unretained) id<UIScrollViewDelegate> forwardTarget;
 @end
 
 @implementation NJKScrollFullScreen
