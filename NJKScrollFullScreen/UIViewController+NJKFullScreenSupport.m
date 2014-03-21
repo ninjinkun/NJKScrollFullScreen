@@ -12,6 +12,8 @@
 
 #import "UIViewController+NJKFullScreenSupport.h"
 
+#define kNearZero 0.000001f
+
 @implementation UIViewController (NJKFullScreenSupport)
 
 - (void)showNavigationBar:(BOOL)animated
@@ -49,12 +51,15 @@
     CGFloat bottomLimit = statusBarHeight;
 
     frame.origin.y = fmin(fmax(y, topLimit), bottomLimit);
-    CGFloat alpha = 1 - (statusBarHeight - frame.origin.y) / statusBarHeight;
-    UIColor *titleTextColor = self.navigationController.navigationBar.titleTextAttributes[NSForegroundColorAttributeName] ?: [UIColor blackColor];
-    titleTextColor = [titleTextColor colorWithAlphaComponent:alpha]; // fade title
+    CGFloat alpha = MAX(1 - (statusBarHeight - frame.origin.y) / statusBarHeight, kNearZero);
     [UIView animateWithDuration:animated ? 0.1 : 0 animations:^{
         self.navigationController.navigationBar.frame = frame;
-        [self.navigationController.navigationBar setTitleTextAttributes:@{ NSForegroundColorAttributeName : titleTextColor }];
+        NSUInteger index = 0;
+        for (UIView *view in self.navigationController.navigationBar.subviews) {
+            index++;
+            if (index == 1 || view.hidden || view.alpha <= 0.0f) continue;
+            view.alpha = alpha;
+        }
         if (NJK_IS_RUNNING_IOS7) {
             // fade bar buttons
             UIColor *tintColor = self.navigationController.navigationBar.tintColor;
@@ -63,7 +68,6 @@
                 self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:components[0] green:components[1] blue:components[2] alpha:alpha];
             }
         }
-
     }];
 }
 
