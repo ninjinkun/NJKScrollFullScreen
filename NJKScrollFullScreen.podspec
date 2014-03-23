@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "NJKScrollFullScreen"
-  s.version      = "0.2"
+  s.version      = "0.2.1"
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.summary      = "Scroll to full screen like Facebook app"
   s.homepage     = "https://github.com/ninjinkun/NJKScrollFullScreen"
