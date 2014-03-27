@@ -28,6 +28,11 @@ NJKScrollDirection detectScrollDirection(currentOffsetY, previousOffsetY)
 
 @implementation NJKScrollFullScreen
 
+- (void)dealloc {
+    //Somehow this is still not set to nil in some cases
+    _forwardTarget = nil;
+}
+
 - (id)initWithForwardTarget:(id)forwardTarget
 {
     self = [super init];
