@@ -64,8 +64,7 @@
             // fade bar buttons
             UIColor *tintColor = self.navigationController.navigationBar.tintColor;
             if (tintColor) {
-                CGFloat *components = (CGFloat *)CGColorGetComponents(tintColor.CGColor);
-                self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:components[0] green:components[1] blue:components[2] alpha:alpha];
+                self.navigationController.navigationBar.tintColor = [tintColor colorWithAlphaComponent:alpha];
             }
         }
     }];
