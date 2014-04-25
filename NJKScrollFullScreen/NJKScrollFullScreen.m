@@ -189,4 +189,13 @@ NJKScrollDirection detectScrollDirection(currentOffsetY, previousOffsetY)
     return ret;
 }
 
+- (BOOL)conformsToProtocol:(Protocol *)aProtocol
+{
+    BOOL ret = [super conformsToProtocol:aProtocol];
+    if (!ret) {
+        ret = [_forwardTarget conformsToProtocol:aProtocol];
+    }
+    return ret;
+}
+
 @end
