@@ -20,15 +20,29 @@
 {
     CGSize statuBarFrameSize = [UIApplication sharedApplication].statusBarFrame.size;
     CGFloat statusBarHeight = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? statuBarFrameSize.height : statuBarFrameSize.width;
-    [self setNavigationBarOriginY:statusBarHeight animated:animated];
+
+    UIWindow *appKeyWindow = [UIApplication sharedApplication].keyWindow;
+    UIView *appBaseView = appKeyWindow.rootViewController.view;
+    CGRect viewControllerFrame =  [appBaseView convertRect:appBaseView.bounds toView:appKeyWindow];
+
+    CGFloat overwrapStatusBarHeight = statusBarHeight - viewControllerFrame.origin.y;
+
+    [self setNavigationBarOriginY:overwrapStatusBarHeight animated:animated];
 }
 
 - (void)hideNavigationBar:(BOOL)animated
 {
     CGSize statuBarFrameSize = [UIApplication sharedApplication].statusBarFrame.size;
     CGFloat statusBarHeight = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? statuBarFrameSize.height : statuBarFrameSize.width;
+
+    UIWindow *appKeyWindow = [UIApplication sharedApplication].keyWindow;
+    UIView *appBaseView = appKeyWindow.rootViewController.view;
+    CGRect viewControllerFrame =  [appBaseView convertRect:appBaseView.bounds toView:appKeyWindow];
+
+    CGFloat overwrapStatusBarHeight = statusBarHeight - viewControllerFrame.origin.y;
+
     CGFloat navigationBarHeight = self.navigationController.navigationBar.frame.size.height;
-    CGFloat top = NJK_IS_RUNNING_IOS7 ? -navigationBarHeight + statusBarHeight : -navigationBarHeight;
+    CGFloat top = NJK_IS_RUNNING_IOS7 ? -navigationBarHeight + overwrapStatusBarHeight : -navigationBarHeight;
 
     [self setNavigationBarOriginY:top animated:animated];
 }
@@ -44,14 +58,21 @@
 {
     CGSize statuBarFrameSize = [UIApplication sharedApplication].statusBarFrame.size;
     CGFloat statusBarHeight = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? statuBarFrameSize.height : statuBarFrameSize.width;
+
+    UIWindow *appKeyWindow = [UIApplication sharedApplication].keyWindow;
+    UIView *appBaseView = appKeyWindow.rootViewController.view;
+    CGRect viewControllerFrame =  [appBaseView convertRect:appBaseView.bounds toView:appKeyWindow];
+
+    CGFloat overwrapStatusBarHeight = statusBarHeight - viewControllerFrame.origin.y;
+
     CGRect frame = self.navigationController.navigationBar.frame;
     CGFloat navigationBarHeight = frame.size.height;
 
-    CGFloat topLimit = NJK_IS_RUNNING_IOS7 ? -navigationBarHeight + statusBarHeight : -navigationBarHeight;
-    CGFloat bottomLimit = statusBarHeight;
+    CGFloat topLimit = NJK_IS_RUNNING_IOS7 ? -navigationBarHeight + overwrapStatusBarHeight : -navigationBarHeight;
+    CGFloat bottomLimit = overwrapStatusBarHeight;
 
     frame.origin.y = fmin(fmax(y, topLimit), bottomLimit);
-    CGFloat alpha = MAX(1 - (statusBarHeight - frame.origin.y) / statusBarHeight, kNearZero);
+    CGFloat alpha = MAX(1 - (overwrapStatusBarHeight - frame.origin.y) / overwrapStatusBarHeight, kNearZero);
     [UIView animateWithDuration:animated ? 0.1 : 0 animations:^{
         self.navigationController.navigationBar.frame = frame;
         NSUInteger index = 0;
