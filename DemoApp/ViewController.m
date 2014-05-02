@@ -28,6 +28,8 @@
     // If or when UIScrollView's delegate is referred to with "weak" rather
     // than "assign", this can and should be removed.
     self.tableView.delegate = nil;
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad
@@ -44,6 +46,8 @@
     self.tableView.delegate = (id)_scrollProxy; // cast for surpress incompatible warnings
 
     _scrollProxy.delegate = self;
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetBars) name:UIApplicationWillEnterForegroundNotification object:nil]; // resume bars when back to forground from other apps
 
     if (!IS_RUNNING_IOS7) {
         // support full screen on iOS 6
@@ -89,6 +93,13 @@
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         [self.refreshControl endRefreshing];
     });
+}
+
+- (void)resetBars
+{
+    [_scrollProxy reset];
+    [self showNavigationBar:NO];
+    [self showToolbar:NO];
 }
 
 #pragma mark -
