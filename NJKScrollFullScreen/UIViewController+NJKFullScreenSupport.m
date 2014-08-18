@@ -138,15 +138,26 @@
 
 - (void)showTabBar:(BOOL)animated
 {
-    CGFloat viewHeight = self.tabBarController.view.frame.size.height;
+    /* NOTE by Tonny
+     * 2014/08/18
+     * 
+     * Weird, even in landscape, self.tabBarController.view.frame=(0 0; 768 1024), 
+     * but, self.navigationController.view.frame=(0 0; 1024 768).
+     * Is this a bug in UIKit?
+     *
+     * Also, the `-hideTabBar:` method captured this issue, but show method didn't.....
+     * 
+     */
+    
+    CGFloat viewHeight = self.navigationController.view.frame.size.height;
     CGFloat toolbarHeight = self.tabBarController.tabBar.frame.size.height;
     [self setTabBarOriginY:viewHeight - toolbarHeight animated:animated];
 }
 
 - (void)hideTabBar:(BOOL)animated
 {
-    CGSize viewSize = self.tabBarController.view.frame.size;
-    CGFloat viewHeight = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? viewSize.height : viewSize.width;
+    CGSize viewSize = self.navigationController.view.frame.size;
+    CGFloat viewHeight = viewSize.height;//UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? viewSize.height : viewSize.width;
     [self setTabBarOriginY:viewHeight animated:animated];
 }
 
@@ -161,14 +172,14 @@
 {
     CGRect frame = self.tabBarController.tabBar.frame;
     CGFloat toolBarHeight = frame.size.height;
-    CGSize viewSize = self.tabBarController.view.frame.size;
-    CGFloat viewHeight = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? viewSize.height : viewSize.width;
-
+    CGSize viewSize = self.navigationController.view.frame.size;
+    CGFloat viewHeight = viewSize.height;//UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? viewSize.height : viewSize.width;
+    
     CGFloat topLimit = viewHeight - toolBarHeight;
     CGFloat bottomLimit = viewHeight;
-
+    
     frame.origin.y = fmin(fmax(y, topLimit), bottomLimit); // limit over moving
-
+    
     [UIView animateWithDuration:animated ? 0.1 : 0 animations:^{
         self.tabBarController.tabBar.frame = frame;
     }];
