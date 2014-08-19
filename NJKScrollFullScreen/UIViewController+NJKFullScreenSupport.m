@@ -166,9 +166,9 @@
     CGFloat viewHeight = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? viewSize.height : viewSize.width;
     CGFloat topLimit = viewHeight - toolBarHeight;
     CGFloat bottomLimit = viewHeight;
-    
+
     frame.origin.y = fmin(fmax(y, topLimit), bottomLimit); // limit over moving
-    
+
     [UIView animateWithDuration:animated ? 0.1 : 0 animations:^{
         self.tabBarController.tabBar.frame = frame;
     }];
