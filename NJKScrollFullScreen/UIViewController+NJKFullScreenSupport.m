@@ -138,17 +138,6 @@
 
 - (void)showTabBar:(BOOL)animated
 {
-    /* NOTE by Tonny
-     * 2014/08/18
-     * 
-     * Weird, even in landscape, self.tabBarController.view.frame=(0 0; 768 1024), 
-     * but, self.navigationController.view.frame=(0 0; 1024 768).
-     * Is this a bug in UIKit?
-     *
-     * Also, the `-hideTabBar:` method captured this issue, but show method didn't.....
-     * 
-     */
-    
     CGSize viewSize = self.tabBarController.view.frame.size;
     CGFloat viewHeight = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? viewSize.height : viewSize.width;
     CGFloat toolbarHeight = self.tabBarController.tabBar.frame.size.height;
