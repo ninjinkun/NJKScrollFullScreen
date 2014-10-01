@@ -139,7 +139,7 @@
 - (void)showTabBar:(BOOL)animated
 {
     CGSize viewSize = self.tabBarController.view.frame.size;
-    CGFloat viewHeight = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? viewSize.height : viewSize.width;
+    CGFloat viewHeight = [self tabBarViewControlleViewHeightFrom:viewSize];
     CGFloat toolbarHeight = self.tabBarController.tabBar.frame.size.height;
     [self setTabBarOriginY:viewHeight - toolbarHeight animated:animated];
 }
@@ -147,7 +147,7 @@
 - (void)hideTabBar:(BOOL)animated
 {
     CGSize viewSize = self.tabBarController.view.frame.size;
-    CGFloat viewHeight = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? viewSize.height : viewSize.width;
+    CGFloat viewHeight = [self tabBarViewControlleViewHeightFrom:viewSize];
     [self setTabBarOriginY:viewHeight animated:animated];
 }
 
@@ -163,7 +163,9 @@
     CGRect frame = self.tabBarController.tabBar.frame;
     CGFloat toolBarHeight = frame.size.height;
     CGSize viewSize = self.tabBarController.view.frame.size;
-    CGFloat viewHeight = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? viewSize.height : viewSize.width;
+
+    CGFloat viewHeight = [self tabBarViewControlleViewHeightFrom:viewSize];
+
     CGFloat topLimit = viewHeight - toolBarHeight;
     CGFloat bottomLimit = viewHeight;
 
@@ -172,6 +174,20 @@
     [UIView animateWithDuration:animated ? 0.1 : 0 animations:^{
         self.tabBarController.tabBar.frame = frame;
     }];
+}
+
+- (CGFloat)tabBarViewControlleViewHeightFrom:(CGSize)viewSize{
+    CGFloat viewHeight = 0.f;
+    NSString *osMajorVersionStr = [[UIDevice currentDevice].systemVersion componentsSeparatedByString:@"."][0];
+    NSInteger osMajorVersion = [osMajorVersionStr integerValue];
+    if (osMajorVersion >= 8) {
+        // starting from iOS8, tabBarViewController.view.frame respects interface orientation
+        viewHeight = viewSize.height;
+    }else{
+        viewHeight = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? viewSize.height : viewSize.width;
+    }
+
+    return viewHeight;
 }
 
 @end
