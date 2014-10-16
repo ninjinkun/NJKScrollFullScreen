@@ -187,7 +187,7 @@
     if (NJK_IS_RUNNING_IOS8) {
         // starting from iOS8, tabBarViewController.view.frame respects interface orientation
         viewHeight = viewSize.height;
-    }else{
+    } else {
         viewHeight = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? viewSize.height : viewSize.width;
     }
 
