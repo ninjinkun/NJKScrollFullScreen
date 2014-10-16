@@ -10,6 +10,12 @@
 #define NJK_IS_RUNNING_IOS7 NO
 #endif
 
+#if __IPHONE_8_0 && __IPHONE_OS_VERSION_MAX_ALLOWED >=  __IPHONE_8_0
+#define NJK_IS_RUNNING_IOS8 ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+#else
+#define NJK_IS_RUNNING_IOS8 NO
+#endif
+
 #import "UIViewController+NJKFullScreenSupport.h"
 
 #define kNearZero 0.000001f
@@ -139,7 +145,7 @@
 - (void)showTabBar:(BOOL)animated
 {
     CGSize viewSize = self.tabBarController.view.frame.size;
-    CGFloat viewHeight = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? viewSize.height : viewSize.width;
+    CGFloat viewHeight = [self tabBarViewControlleViewHeightFromViewSize:viewSize];
     CGFloat toolbarHeight = self.tabBarController.tabBar.frame.size.height;
     [self setTabBarOriginY:viewHeight - toolbarHeight animated:animated];
 }
@@ -147,7 +153,7 @@
 - (void)hideTabBar:(BOOL)animated
 {
     CGSize viewSize = self.tabBarController.view.frame.size;
-    CGFloat viewHeight = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? viewSize.height : viewSize.width;
+    CGFloat viewHeight = [self tabBarViewControlleViewHeightFromViewSize:viewSize];
     [self setTabBarOriginY:viewHeight animated:animated];
 }
 
@@ -163,7 +169,9 @@
     CGRect frame = self.tabBarController.tabBar.frame;
     CGFloat toolBarHeight = frame.size.height;
     CGSize viewSize = self.tabBarController.view.frame.size;
-    CGFloat viewHeight = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? viewSize.height : viewSize.width;
+
+    CGFloat viewHeight = [self tabBarViewControlleViewHeightFromViewSize:viewSize];
+
     CGFloat topLimit = viewHeight - toolBarHeight;
     CGFloat bottomLimit = viewHeight;
 
@@ -172,6 +180,18 @@
     [UIView animateWithDuration:animated ? 0.1 : 0 animations:^{
         self.tabBarController.tabBar.frame = frame;
     }];
+}
+
+- (CGFloat)tabBarViewControlleViewHeightFromViewSize:(CGSize)viewSize{
+    CGFloat viewHeight = 0.f;
+    if (NJK_IS_RUNNING_IOS8) {
+        // starting from iOS8, tabBarViewController.view.frame respects interface orientation
+        viewHeight = viewSize.height;
+    } else {
+        viewHeight = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? viewSize.height : viewSize.width;
+    }
+
+    return viewHeight;
 }
 
 @end
