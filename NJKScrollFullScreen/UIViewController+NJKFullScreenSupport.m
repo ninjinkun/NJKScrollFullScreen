@@ -24,8 +24,7 @@
 
 - (void)showNavigationBar:(BOOL)animated
 {
-    CGSize statuBarFrameSize = [UIApplication sharedApplication].statusBarFrame.size;
-    CGFloat statusBarHeight = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? statuBarFrameSize.height : statuBarFrameSize.width;
+    CGFloat statusBarHeight = [self statusBarHeight];
 
     UIWindow *appKeyWindow = [UIApplication sharedApplication].keyWindow;
     UIView *appBaseView = appKeyWindow.rootViewController.view;
@@ -38,8 +37,7 @@
 
 - (void)hideNavigationBar:(BOOL)animated
 {
-    CGSize statuBarFrameSize = [UIApplication sharedApplication].statusBarFrame.size;
-    CGFloat statusBarHeight = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? statuBarFrameSize.height : statuBarFrameSize.width;
+    CGFloat statusBarHeight = [self statusBarHeight];
 
     UIWindow *appKeyWindow = [UIApplication sharedApplication].keyWindow;
     UIView *appBaseView = appKeyWindow.rootViewController.view;
@@ -62,8 +60,7 @@
 
 - (void)setNavigationBarOriginY:(CGFloat)y animated:(BOOL)animated
 {
-    CGSize statuBarFrameSize = [UIApplication sharedApplication].statusBarFrame.size;
-    CGFloat statusBarHeight = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? statuBarFrameSize.height : statuBarFrameSize.width;
+    CGFloat statusBarHeight = [self statusBarHeight];
 
     UIWindow *appKeyWindow = [UIApplication sharedApplication].keyWindow;
     UIView *appBaseView = appKeyWindow.rootViewController.view;
@@ -95,6 +92,14 @@
             }
         }
     }];
+}
+
+- (CGFloat)statusBarHeight {
+    CGSize statuBarFrameSize = [UIApplication sharedApplication].statusBarFrame.size;
+    if (NJK_IS_RUNNING_IOS8) {
+        return statuBarFrameSize.height;
+    }
+    return UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? statuBarFrameSize.height : statuBarFrameSize.width;
 }
 
 #pragma mark -
