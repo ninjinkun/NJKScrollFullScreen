@@ -53,7 +53,7 @@
     [self setNavigationBarOriginY:top animated:animated];
 }
 
-- (void)moveNavigtionBar:(CGFloat)deltaY animated:(BOOL)animated
+- (void)moveNavigationBar:(CGFloat)deltaY animated:(BOOL)animated
 {
     CGRect frame = self.navigationController.navigationBar.frame;
     CGFloat nextY = frame.origin.y + deltaY;
