@@ -10,7 +10,7 @@
 
 - (void)showNavigationBar:(BOOL)animated;
 - (void)hideNavigationBar:(BOOL)animated;
-- (void)moveNavigtionBar:(CGFloat)deltaY animated:(BOOL)animated;
+- (void)moveNavigationBar:(CGFloat)deltaY animated:(BOOL)animated;
 - (void)setNavigationBarOriginY:(CGFloat)y animated:(BOOL)animated;
 
 - (void)showToolbar:(BOOL)animated;

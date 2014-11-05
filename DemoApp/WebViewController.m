@@ -32,13 +32,13 @@
 
 - (void)scrollFullScreen:(NJKScrollFullScreen *)proxy scrollViewDidScrollUp:(CGFloat)deltaY
 {
-    [self moveNavigtionBar:deltaY animated:YES];
+    [self moveNavigationBar:deltaY animated:YES];
     [self moveToolbar:-deltaY animated:YES]; // move to revese direction
 }
 
 - (void)scrollFullScreen:(NJKScrollFullScreen *)proxy scrollViewDidScrollDown:(CGFloat)deltaY
 {
-    [self moveNavigtionBar:deltaY animated:YES];
+    [self moveNavigationBar:deltaY animated:YES];
     [self moveToolbar:-deltaY animated:YES];
 }
 

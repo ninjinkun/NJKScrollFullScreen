@@ -44,12 +44,12 @@ Instance and set `UIScrollViewDelegate` on your view controller. If you set `scr
 ```objc
 - (void)scrollFullScreen:(NJKScrollFullScreen *)proxy scrollViewDidScrollUp:(CGFloat)deltaY
 {
-    [self moveNavigtionBar:deltaY animated:YES];
+    [self moveNavigationBar:deltaY animated:YES];
 }
 
 - (void)scrollFullScreen:(NJKScrollFullScreen *)proxy scrollViewDidScrollDown:(CGFloat)deltaY
 {
-    [self moveNavigtionBar:deltaY animated:YES];
+    [self moveNavigationBar:deltaY animated:YES];
 }
 
 - (void)scrollFullScreenScrollViewDidEndDraggingScrollUp:(NJKScrollFullScreen *)proxy
@@ -87,7 +87,7 @@ Or you can implement own full screen behavior like below.
     [self setNavigationBarOriginY:0 animated:animated];
 }
 
-- (void)moveNavigtionBar:(CGFloat)deltaY animated:(BOOL)animated
+- (void)moveNavigationBar:(CGFloat)deltaY animated:(BOOL)animated
 {
     CGRect frame = self.navigationController.navigationBar.frame;
     CGFloat nextY = frame.origin.y + deltaY;
