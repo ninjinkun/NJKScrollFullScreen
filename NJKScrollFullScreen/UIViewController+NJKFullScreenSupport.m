@@ -103,7 +103,7 @@
 - (void)showToolbar:(BOOL)animated
 {
     CGSize viewSize = self.navigationController.view.frame.size;
-    CGFloat viewHeight = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? viewSize.height : viewSize.width;
+    CGFloat viewHeight = [self bottomBarViewControlleViewHeightFromViewSize:viewSize];
     CGFloat toolbarHeight = self.navigationController.toolbar.frame.size.height;
     [self setToolbarOriginY:viewHeight - toolbarHeight animated:animated];
 }
@@ -111,7 +111,7 @@
 - (void)hideToolbar:(BOOL)animated
 {
     CGSize viewSize = self.navigationController.view.frame.size;
-    CGFloat viewHeight = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? viewSize.height : viewSize.width;
+    CGFloat viewHeight = [self bottomBarViewControlleViewHeightFromViewSize:viewSize];
     [self setToolbarOriginY:viewHeight animated:animated];
 }
 
@@ -127,7 +127,7 @@
     CGRect frame = self.navigationController.toolbar.frame;
     CGFloat toolBarHeight = frame.size.height;
     CGSize viewSize = self.navigationController.view.frame.size;
-    CGFloat viewHeight = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? viewSize.height : viewSize.width;
+    CGFloat viewHeight = [self bottomBarViewControlleViewHeightFromViewSize:viewSize];
 
     CGFloat topLimit = viewHeight - toolBarHeight;
     CGFloat bottomLimit = viewHeight;
@@ -145,7 +145,7 @@
 - (void)showTabBar:(BOOL)animated
 {
     CGSize viewSize = self.tabBarController.view.frame.size;
-    CGFloat viewHeight = [self tabBarViewControlleViewHeightFromViewSize:viewSize];
+    CGFloat viewHeight = [self bottomBarViewControlleViewHeightFromViewSize:viewSize];
     CGFloat toolbarHeight = self.tabBarController.tabBar.frame.size.height;
     [self setTabBarOriginY:viewHeight - toolbarHeight animated:animated];
 }
@@ -153,7 +153,7 @@
 - (void)hideTabBar:(BOOL)animated
 {
     CGSize viewSize = self.tabBarController.view.frame.size;
-    CGFloat viewHeight = [self tabBarViewControlleViewHeightFromViewSize:viewSize];
+    CGFloat viewHeight = [self bottomBarViewControlleViewHeightFromViewSize:viewSize];
     [self setTabBarOriginY:viewHeight animated:animated];
 }
 
@@ -170,7 +170,7 @@
     CGFloat toolBarHeight = frame.size.height;
     CGSize viewSize = self.tabBarController.view.frame.size;
 
-    CGFloat viewHeight = [self tabBarViewControlleViewHeightFromViewSize:viewSize];
+    CGFloat viewHeight = [self bottomBarViewControlleViewHeightFromViewSize:viewSize];
 
     CGFloat topLimit = viewHeight - toolBarHeight;
     CGFloat bottomLimit = viewHeight;
@@ -182,7 +182,8 @@
     }];
 }
 
-- (CGFloat)tabBarViewControlleViewHeightFromViewSize:(CGSize)viewSize{
+- (CGFloat)bottomBarViewControlleViewHeightFromViewSize:(CGSize)viewSize
+{
     CGFloat viewHeight = 0.f;
     if (NJK_IS_RUNNING_IOS8) {
         // starting from iOS8, tabBarViewController.view.frame respects interface orientation
