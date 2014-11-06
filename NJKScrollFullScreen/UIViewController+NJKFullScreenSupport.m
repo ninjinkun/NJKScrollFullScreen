@@ -195,3 +195,13 @@
 }
 
 @end
+
+@implementation UIViewController (NJKFullScreenSupportDeprecated)
+
+- (void)moveNavigtionBar:(CGFloat)deltaY animated:(BOOL)animated
+{
+    [self moveNavigationBar:deltaY animated:animated];
+}
+
+@end
+
