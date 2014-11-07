@@ -75,7 +75,9 @@
     CGFloat bottomLimit = overwrapStatusBarHeight;
 
     frame.origin.y = fmin(fmax(y, topLimit), bottomLimit);
-    CGFloat alpha = MAX(1 - (overwrapStatusBarHeight - frame.origin.y) / overwrapStatusBarHeight, kNearZero);
+
+    CGFloat navBarHiddenRatio = overwrapStatusBarHeight > 0 ? (overwrapStatusBarHeight - frame.origin.y) / overwrapStatusBarHeight : 0;
+    CGFloat alpha = MAX(1.f - navBarHiddenRatio, kNearZero);
     [UIView animateWithDuration:animated ? 0.1 : 0 animations:^{
         self.navigationController.navigationBar.frame = frame;
         NSUInteger index = 0;
