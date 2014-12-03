@@ -8,7 +8,7 @@
 
 @protocol NJKScrollFullscreenDelegate;
 
-@interface NJKScrollFullScreen : NSObject<UIScrollViewDelegate>
+@interface NJKScrollFullScreen : NSObject<UIScrollViewDelegate, UITableViewDelegate, UIWebViewDelegate>
 
 @property (nonatomic, weak) id<NJKScrollFullscreenDelegate> delegate;
 
