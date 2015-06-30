@@ -1,17 +1,17 @@
-# NJKScrollFullSreen
-NJKScrollFullSreen is Facebook App like scroll to full screen library.
+# NJKScrollFullSrceen
+NJKScrollFullSrceen is Facebook App like scroll to full screen library.
 
 <img src="Screenshots/screencast.gif" width=320>
 
 This repository consists of full screen delegate and full screen UI behaivior module.
 
-- `NJKScrollFullSreen`
+- `NJKScrollFullScreen`
  - Simple UIScrollViewDelegate wrapper. It called delegate methods when full screen wanted.
 - `UIViewController+NJKFullScreenSupport`
  - Add full screen behaivior to UIViewController.
 
 These modules are individual. You can implement your own customized full screen behavior without `UIViewController+NJKFullScreenSupport`.
-`NJKScrollFullSreen` can apply not only UIScrollView but also UIWebView and UITableView.
+`NJKScrollFullSrceen` can apply not only UIScrollView but also UIWebView and UITableView.
 
 # Requirements
 - iOS 5.0 or later
