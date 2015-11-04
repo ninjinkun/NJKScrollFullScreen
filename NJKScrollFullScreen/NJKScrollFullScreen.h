@@ -5,6 +5,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "UIViewController+NJKFullScreenSupport.h"
 
 @protocol NJKScrollFullscreenDelegate;
 
