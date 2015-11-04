@@ -78,6 +78,12 @@ NJKScrollDirection detectScrollDirection(currentOffsetY, previousOffsetY)
             if (isOverThreshold || isOverBottomBoundary)  {
                 if ([_delegate respondsToSelector:@selector(scrollFullScreen:scrollViewDidScrollUp:)]) {
                     [_delegate scrollFullScreen:self scrollViewDidScrollUp:deltaY];
+                } else {
+#warning add auto execution
+                    UIViewController *forwardTargetVc = (UIViewController *)_forwardTarget;
+                    [forwardTargetVc moveNavigationBar:deltaY animated:YES];
+                    [forwardTargetVc moveTabBar:-deltaY animated:YES];
+                    [forwardTargetVc moveToolbar:-deltaY animated:YES];
                 }
             }
         }
@@ -89,6 +95,12 @@ NJKScrollDirection detectScrollDirection(currentOffsetY, previousOffsetY)
             if (isOverThreshold || isOverTopBoundary) {
                 if ([_delegate respondsToSelector:@selector(scrollFullScreen:scrollViewDidScrollDown:)]) {
                     [_delegate scrollFullScreen:self scrollViewDidScrollDown:deltaY];
+                } else {
+#warning add auto execution
+                    UIViewController *forwardTargetVc = (UIViewController *)_forwardTarget;
+                    [forwardTargetVc moveNavigationBar:deltaY animated:YES];
+                    [forwardTargetVc moveTabBar:-deltaY animated:YES];
+                    [forwardTargetVc moveToolbar:-deltaY animated:YES];
                 }
             }
         }
@@ -126,6 +138,12 @@ NJKScrollDirection detectScrollDirection(currentOffsetY, previousOffsetY)
             if (isOverThreshold || isOverBottomBoundary) {
                 if ([_delegate respondsToSelector:@selector(scrollFullScreenScrollViewDidEndDraggingScrollUp:)]) {
                     [_delegate scrollFullScreenScrollViewDidEndDraggingScrollUp:self];
+                } else {
+#warning add auto execution
+                    UIViewController *forwardTargetVc = (UIViewController *)_forwardTarget;
+                    [forwardTargetVc hideNavigationBar:YES];
+                    [forwardTargetVc hideTabBar:YES];
+                    [forwardTargetVc hideToolbar:YES];
                 }
             }
             break;
@@ -138,6 +156,12 @@ NJKScrollDirection detectScrollDirection(currentOffsetY, previousOffsetY)
             if (isOverThreshold || isOverTopBoundary) {
                 if ([_delegate respondsToSelector:@selector(scrollFullScreenScrollViewDidEndDraggingScrollDown:)]) {
                     [_delegate scrollFullScreenScrollViewDidEndDraggingScrollDown:self];
+                } else {
+#warning add auto execution
+                    UIViewController *forwardTargetVc = (UIViewController *)_forwardTarget;
+                    [forwardTargetVc showNavigationBar:YES];
+                    [forwardTargetVc showTabBar:YES];
+                    [forwardTargetVc showToolbar:YES];
                 }
             }
             break;
@@ -155,6 +179,12 @@ NJKScrollDirection detectScrollDirection(currentOffsetY, previousOffsetY)
     }
     if ([_delegate respondsToSelector:@selector(scrollFullScreenScrollViewDidEndDraggingScrollDown:)]) {
         [_delegate scrollFullScreenScrollViewDidEndDraggingScrollDown:self];
+    } else {
+#warning add auto execution
+        UIViewController *forwardTargetVc = (UIViewController *)_forwardTarget;
+        [forwardTargetVc showNavigationBar:YES];
+        [forwardTargetVc showTabBar:YES];
+        [forwardTargetVc showToolbar:YES];
     }
     return ret;
 }
