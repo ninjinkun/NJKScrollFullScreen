@@ -34,7 +34,7 @@ Instance and set `UIScrollViewDelegate` on your view controller. If you set `scr
     [super viewDidLoad];
 
     _scrollProxy = [[NJKScrollFullScreen alloc] initWithForwardTarget:self]; // UIScrollViewDelegate and UITableViewDelegate methods proxy to ViewController
-    self.tableView.delegate = (id)_scrollProxy; // cast for surpress incompatible warnings
+    self.tableView.delegate = (id)_scrollProxy; // cast for suppress incompatible warnings
     _scrollProxy.delegate = self;
 }
 ```
